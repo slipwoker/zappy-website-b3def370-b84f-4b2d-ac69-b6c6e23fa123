@@ -1,0 +1,135 @@
+# Business — Generative Engine Optimization Map
+
+---
+
+## Pages
+
+### Home
+https://example.com
+A jeep tour company operating in the Golan Heights, offering nature-focused adventure experiences. The brand &#39;Magic of Nature Jeep Tours&#39; emphasizes the natural
+
+### צור קשר
+https://example.com/צור-קשר
+צור קשר | טיולי ג׳יפים קסם הטבע
+
+### אודות
+https://example.com/אודות
+אודות | טיולי ג׳יפים קסם הטבע
+
+### טיולי ג'יפים קסם הטבע
+https://example.com/טיולי-גיפים-נחל-כנף-ושמורת-הבטיחה
+נחל כנף ושמורת הבטיחה | טיולי ג׳יפים קסם הטבע
+
+### טיולי ג'יפים קסם הטבע
+https://example.com/טיול-גיפים-מסלול-מעיינות-בגולן
+מסלול מעיינות בגולן | טיולי ג׳יפים קסם הטבע
+
+### טיולי ג'יפים קסם הטבע
+https://example.com/טיולי-גיפים-ספארי-לילה
+ספארי לילה | טיולי ג׳יפים קסם הטבע
+
+### המסתורין שברמת הגולן
+https://example.com/גלגל-הרפאים-רוגם-אל-הירי-המסתורין-שבר
+גלגל הרפאים - המסתורין שברמת הגולן | טיולי ג׳יפים קסם הטבע
+
+### מסלול טיול גיפים בדרום רמת הגולן
+https://example.com/מסלול-טיול-גיפים-בדרום-רמת-הגולן
+דרום רמת הגולן | טיולי ג׳יפים קסם הטבע
+
+### טיולי ג'יפים קסם הטבע
+https://example.com/טיול-גיפים-בחורף
+טיול בחורף | טיולי ג׳יפים קסם הטבע
+
+### טיולי ג'יפים קסם הטבע
+https://example.com/טיולי-גיפים-בגשם-ברמת-הגולן
+טיול בגשם ברמת הגולן | טיולי ג׳יפים קסם הטבע
+
+### סמך התחתון
+https://example.com/טיול-גיפים-בסמך-תחתון
+סמך התחתון | טיולי ג׳יפים קסם הטבע
+
+### טיול ג'יפים גשר הסורי
+https://example.com/טיול-גיפים-גשר-הסורי
+גשר הסורי | טיולי ג׳יפים קסם הטבע
+
+### גלריה
+https://example.com/גלריה
+גלריה | טיולי ג׳יפים קסם הטבע
+
+### מטיילים ממליצים
+https://example.com/מטיילים-ממליצים
+מטיילים ממליצים | טיולי ג׳יפים קסם הטבע
+
+### טיול לקבוצות
+https://example.com/טיול-לקבוצות-ברמת-הגולן
+טיול לקבוצות | טיולי ג׳יפים קסם הטבע
+
+### הקטע הדרומי
+https://example.com/טיול-בשביל-אלי-כהן-הקטע-הדרומי
+שביל אלי כהן - הקטע הדרומי | טיולי ג׳יפים קסם הטבע
+
+### טיולי ג'יפים קסם הטבע
+https://example.com/טיול-באחו-נוב
+באחו נוב | טיולי ג׳יפים קסם הטבע
+
+### טיולי ג'יפים קסם הטבע
+https://example.com/טיול-למפל-השחור-בנחל-אל-על
+מפל השחור בנחל אל-על | טיולי ג׳יפים קסם הטבע
+
+### טיולי ג'יפים קסם הטבע
+https://example.com/טיול-למפל-האירוסים-והבריכה
+מפל האירוסים והבריכה | טיולי ג׳יפים קסם הטבע
+
+### בלוג
+https://example.com/בלוג
+בלוג | טיולי ג׳יפים קסם הטבע
+
+### טיול גיפים ברמת הגולן וסובב כנרת
+https://example.com/טיול-גיפים-ברמת-הגולן-וסובב-כנרת
+רמת הגולן וסובב כנרת | טיולי ג׳יפים קסם הטבע
+
+### Avia
+https://example.com/author/avia
+Avia | טיולי ג׳יפים קסם הטבע
+
+### טיולי ג'יפים קסם הטבע
+https://example.com/טיול-גיפים-בגולן-והכנרת-מתנה
+גולן וכנרת - מתנה | טיולי ג׳יפים קסם הטבע
+
+### טיולי ג'יפים קסם הטבע
+https://example.com/טיול-גיפים-בנוב-וקינון-החסידות
+נוב וקינון החסידות | טיולי ג׳יפים קסם הטבע
+
+### טיולי ג'יפים קסם הטבע
+https://example.com/טיול-גיפים-ברמת-הגולן-באביב
+רמת הגולן באביב | טיולי ג׳יפים קסם הטבע
+
+### כללי Archives
+https://example.com/category/כללי
+כללי Archives | טיולי ג׳יפים קסם הטבע
+
+## Legal & Policy
+
+### Privacy Policy
+https://example.com/privacy
+Information about how user data is collected, stored, and protected.
+
+### Terms & Conditions
+https://example.com/terms
+Legal terms describing service usage, rights, and policies.
+
+### Accessibility Statement
+https://example.com/accessibility
+Information about WCAG compliance and accessibility features.
+
+---
+
+# Business Context (for LLM understanding)
+
+## About Business
+---
+
+# Additional Resources
+
+- **Sitemap**: https://example.com/sitemap.xml
+- **Robots.txt**: https://example.com/robots.txt

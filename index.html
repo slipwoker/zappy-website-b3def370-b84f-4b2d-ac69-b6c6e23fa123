@@ -1,0 +1,1339 @@
+<!DOCTYPE html>
+<html lang="he" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="robots" content="index, follow">
+    <title>טיולי ג׳יפים קסם הטבע | תיירות והרפתקאות</title>
+    <meta name="description" content="A jeep tour company operating in the Golan Heights, offering nature-focused adventure experiences. The brand &#39;Magic of Nature Jeep Tours&#39; emphasizes the natural">
+    <meta name="keywords" content="">
+    
+    <!-- Favicons -->
+    <link rel="icon" type="image/x-icon" href="/assets/favicon.ico">
+    <link rel="icon" type="image/png" sizes="16x16" href="/assets/favicon-16x16.png">
+    <link rel="icon" type="image/png" sizes="32x32" href="/assets/favicon-32x32.png">
+    <link rel="icon" type="image/png" sizes="48x48" href="/assets/favicon-48x48.png">
+    <link rel="icon" type="image/png" sizes="192x192" href="/assets/favicon-192x192.png">
+    <link rel="icon" type="image/png" sizes="512x512" href="/assets/favicon-512x512.png">
+    <link rel="apple-touch-icon" href="/assets/apple-touch-icon.png">
+    <!-- Zappy Analytics -->
+<script>
+(function() {
+  'use strict';
+  
+  // Configuration
+  var config = {
+    websiteId: 'b3def370-b84f-4b2d-ac69-b6c6e23fa123',
+    apiUrl: 'https://qaapi.zappy5.com/api/analytics/track',
+    sessionDuration: 30 * 60 * 1000, // 30 minutes
+    visitorDuration: 30 * 24 * 60 * 60 * 1000, // 30 days
+    trackPageViews: true,
+    trackClicks: true,
+    trackFormSubmissions: true
+  };
+  
+  // Generate or retrieve persistent visitor ID (30 days)
+  function getVisitorId() {
+    var visitorKey = 'zappy_visitor_' + config.websiteId;
+    var visitor = null;
+    
+    try {
+      visitor = localStorage.getItem(visitorKey);
+      if (visitor) {
+        var visitorData = JSON.parse(visitor);
+        var now = Date.now();
+        
+        // Check if visitor ID is still valid (30 days)
+        if (now - visitorData.created < config.visitorDuration) {
+          // Update last seen timestamp
+          visitorData.lastSeen = now;
+          localStorage.setItem(visitorKey, JSON.stringify(visitorData));
+          return visitorData.id;
+        }
+      }
+    } catch (e) {
+      console.warn('Zappy Analytics: LocalStorage not available');
+    }
+    
+    // Generate new visitor ID
+    var newVisitorId = 'zv_' + Date.now() + '_' + Math.random().toString(36).substr(2, 9);
+    
+    try {
+      localStorage.setItem(visitorKey, JSON.stringify({
+        id: newVisitorId,
+        created: Date.now(),
+        lastSeen: Date.now()
+      }));
+    } catch (e) {
+      // Continue without local storage
+    }
+    
+    return newVisitorId;
+  }
+  
+  // Generate or retrieve session ID (30 minutes)
+  function getSessionId() {
+    var sessionKey = 'zappy_session_' + config.websiteId;
+    var session = null;
+    
+    try {
+      session = sessionStorage.getItem(sessionKey);
+      if (session) {
+        var sessionData = JSON.parse(session);
+        var now = Date.now();
+        
+        // Check if session is still valid
+        if (now - sessionData.timestamp < config.sessionDuration) {
+          // Update timestamp
+          sessionData.timestamp = now;
+          sessionStorage.setItem(sessionKey, JSON.stringify(sessionData));
+          return sessionData.id;
+        }
+      }
+    } catch (e) {
+      console.warn('Zappy Analytics: SessionStorage not available');
+    }
+    
+    // Generate new session ID
+    var newSessionId = 'zs_' + Date.now() + '_' + Math.random().toString(36).substr(2, 9);
+    
+    try {
+      sessionStorage.setItem(sessionKey, JSON.stringify({
+        id: newSessionId,
+        timestamp: Date.now()
+      }));
+    } catch (e) {
+      // Continue without session storage
+    }
+    
+    return newSessionId;
+  }
+  
+  var visitorId = getVisitorId();
+  var sessionId = getSessionId();
+  
+  // Track an event
+  function trackEvent(eventType, data) {
+    data = data || {};
+    
+    var eventData = {
+      website_id: config.websiteId,
+      event_type: eventType,
+      page_path: window.location.pathname,
+      referrer: document.referrer || 'direct',
+      visitor_id: visitorId,
+      session_id: sessionId,
+      metadata: data
+    };
+    
+    // Use sendBeacon if available (better for page unload events)
+    if (navigator.sendBeacon) {
+      var blob = new Blob([JSON.stringify(eventData)], { type: 'application/json' });
+      navigator.sendBeacon(config.apiUrl, blob);
+    } else {
+      // Fallback to fetch
+      fetch(config.apiUrl, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(eventData),
+        keepalive: true
+      }).catch(function(error) {
+        console.warn('Zappy Analytics: Failed to track event', error);
+      });
+    }
+  }
+  
+  // Track page view
+  if (config.trackPageViews) {
+    trackEvent('pageview', {
+      title: document.title,
+      url: window.location.href
+    });
+  }
+  
+  // Track clicks on important elements
+  if (config.trackClicks) {
+    document.addEventListener('click', function(e) {
+      var target = e.target;
+      
+      // Track button clicks (counted as actions)
+      if (target.tagName === 'BUTTON' || target.closest('button')) {
+        var button = target.tagName === 'BUTTON' ? target : target.closest('button');
+        trackEvent('click', {
+          element: 'button',
+          text: button.textContent.trim().substring(0, 100),
+          id: button.id || null,
+          class: button.className || null
+        });
+      }
+      
+      // Track link clicks (navigation - not counted as actions)
+      else if (target.tagName === 'A' || target.closest('a')) {
+        var link = target.tagName === 'A' ? target : target.closest('a');
+        trackEvent('navigation', {
+          element: 'link',
+          text: link.textContent.trim().substring(0, 100),
+          href: link.href,
+          external: link.hostname !== window.location.hostname
+        });
+      }
+    }, true);
+  }
+  
+  // Track form submissions
+  if (config.trackFormSubmissions) {
+    document.addEventListener('submit', function(e) {
+      var form = e.target;
+      
+      trackEvent('form_submit', {
+        form_id: form.id || null,
+        form_name: form.name || null,
+        form_action: form.action || null,
+        form_method: form.method || 'GET'
+      });
+    }, true);
+  }
+  
+  // Track time on page (send on page unload)
+  var pageLoadTime = Date.now();
+  
+  window.addEventListener('beforeunload', function() {
+    var timeOnPage = Math.floor((Date.now() - pageLoadTime) / 1000); // in seconds
+    
+    trackEvent('page_unload', {
+      time_on_page: timeOnPage,
+      page_path: window.location.pathname
+    });
+  });
+  
+  // Expose tracking function globally for custom events
+  window.zappyAnalytics = {
+    track: trackEvent,
+    getVisitorId: function() { return visitorId; },
+    getSessionId: function() { return sessionId; }
+  };
+  
+})();
+</script>
+<!-- End Zappy Analytics -->
+    <meta property="og:title" content="טיולי ג׳יפים קסם הטבע | תיירות והרפתקאות">
+  <meta property="og:description" content="A jeep tour company operating in the Golan Heights, offering nature-focused adventure experiences. The brand 'Magic of Nature Jeep Tours' emphasizes the natural">
+  <meta property="og:type" content="website">
+  <meta property="og:locale" content="he_IL">
+  
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="טיולי ג׳יפים קסם הטבע | תיירות והרפתקאות">
+  <meta name="twitter:description" content="A jeep tour company operating in the Golan Heights, offering nature-focused adventure experiences. The brand 'Magic of Nature Jeep Tours' emphasizes the natural">
+  
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+    <!-- Favicons -->
+    <link rel="icon" type="image/x-icon" href="/assets/favicon.ico">
+    <link rel="icon" type="image/png" sizes="16x16" href="/assets/favicon-16x16.png">
+    <link rel="icon" type="image/png" sizes="32x32" href="/assets/favicon-32x32.png">
+    <link rel="icon" type="image/png" sizes="48x48" href="/assets/favicon-48x48.png">
+    <link rel="icon" type="image/png" sizes="192x192" href="/assets/favicon-192x192.png">
+    <link rel="icon" type="image/png" sizes="512x512" href="/assets/favicon-512x512.png">
+    <link rel="apple-touch-icon" href="/assets/apple-touch-icon.png">
+    <!-- Cookie Consent -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/vanilla-cookieconsent@3/dist/cookieconsent.css" />
+    <script src="https://cdn.jsdelivr.net/npm/vanilla-cookieconsent@3/dist/cookieconsent.umd.js"></script>
+    <!-- Mickidum Accessibility Toolbar -->
+    <script src="https://cdn.jsdelivr.net/gh/mickidum/acc_toolbar/acctoolbar/acctoolbar.min.js"></script>
+    <link rel="stylesheet" href="/styles.css">
+
+    <style id="zappy-dropdown-submenu-styles">
+      /* ========== DESKTOP DROPDOWN SUBMENU STYLES ========== */
+      /* Base styles for dropdown submenus - parent must be positioned */
+      .nav-menu li:has(.sub-menu), nav li:has(.sub-menu), .navbar li:has(.sub-menu), #navMenu li:has(.sub-menu) { position: relative; }
+      /* Submenu base - hidden by default */
+      .nav-menu .sub-menu, nav .sub-menu, .navbar .sub-menu, #navMenu .sub-menu { display: block !important; position: absolute !important; top: 100%; left: 0; min-width: 220px; background: white; border-radius: 8px; box-shadow: 0 8px 25px rgba(0,0,0,0.15); padding: 8px 0; opacity: 0; visibility: hidden; transform: translateY(10px); transition: all 0.3s ease; z-index: 1000; list-style: none; pointer-events: none; }
+      /* CRITICAL: Desktop hover styles to show dropdown */
+      .nav-menu li:hover > .sub-menu, nav li:hover > .sub-menu, .navbar li:hover > .sub-menu, #navMenu li:hover > .sub-menu { opacity: 1 !important; visibility: visible !important; transform: translateY(0) !important; pointer-events: auto !important; }
+      /* Submenu item styling */
+      .sub-menu li { list-style: none; margin: 0; padding: 0; }
+      .sub-menu a { display: block !important; padding: 10px 16px !important; color: #333 !important; font-weight: 500; text-decoration: none; white-space: nowrap; transition: background-color 0.2s; }
+      .sub-menu a:hover { background-color: #f5f5f5; }
+      /* RTL (Hebrew/Arabic) dropdown positioning */
+      [dir="rtl"] .nav-menu .sub-menu, [dir="rtl"] nav .sub-menu, [dir="rtl"] .navbar .sub-menu, html[lang="he"] .nav-menu .sub-menu, html[lang="he"] nav .sub-menu, html[lang="he"] .navbar .sub-menu, html[lang="ar"] .nav-menu .sub-menu, html[lang="ar"] nav .sub-menu, html[lang="ar"] .navbar .sub-menu { left: auto !important; right: 0 !important; }
+      /* Hide empty dropdown menus */
+      .sub-menu:empty, .sub-menu:not(:has(li:not(.zappy-hidden-menu-item))), .sub-menu:not(:has(li)) { display: none !important; opacity: 0 !important; visibility: hidden !important; pointer-events: none !important; }
+      /* Desktop: show submenu on Menu Group hover */
+      li:has(.menu-group-title):hover > .sub-menu { opacity: 1 !important; visibility: visible !important; transform: translateY(0) !important; pointer-events: auto !important; }
+      /* Menu Group title styling */
+      .nav-menu > li > .menu-group-title, #navMenu > li > .menu-group-title { display: inline-block; padding: 0.5rem 1rem; cursor: default; user-select: none; }
+      
+      /* ========== MOBILE SUBMENU STYLES ========== */
+      @media (max-width: 768px) {
+        .nav-menu .sub-menu, nav .sub-menu, .navbar .sub-menu, #navMenu .sub-menu { position: static !important; transform: none !important; box-shadow: none !important; background: transparent !important; max-height: 0; overflow: hidden; opacity: 0; visibility: hidden; transition: max-height 0.3s ease, opacity 0.3s ease; padding: 0 !important; border-radius: 0 !important; }
+        .sub-menu.mobile-expanded { max-height: 500px !important; opacity: 1 !important; visibility: visible !important; padding: 8px 0 8px 16px !important; }
+        [dir="rtl"] .sub-menu.mobile-expanded, html[lang="he"] .sub-menu.mobile-expanded { padding: 8px 16px 8px 0 !important; }
+        /* Disable hover behavior on mobile */
+        .nav-menu li:hover > .sub-menu, nav li:hover > .sub-menu, .navbar li:hover > .sub-menu, #navMenu li:hover > .sub-menu { opacity: 0; visibility: hidden; pointer-events: none; }
+        .nav-menu li > .sub-menu.mobile-expanded, nav li > .sub-menu.mobile-expanded, .navbar li > .sub-menu.mobile-expanded, #navMenu li > .sub-menu.mobile-expanded { opacity: 1 !important; visibility: visible !important; pointer-events: auto !important; }
+        .nav-menu li:has(.sub-menu), nav li:has(.sub-menu), .navbar li:has(.sub-menu), #navMenu li:has(.sub-menu) { display: flex !important; flex-wrap: wrap !important; align-items: center !important; position: relative !important; min-height: 44px !important; }
+        .nav-menu li:has(.sub-menu) > a, nav li:has(.sub-menu) > a, .navbar li:has(.sub-menu) > a, #navMenu li:has(.sub-menu) > a { flex: 1 !important; min-width: 0 !important; }
+        .nav-menu li:has(.sub-menu) > .menu-group-title, nav li:has(.sub-menu) > .menu-group-title, .navbar li:has(.sub-menu) > .menu-group-title, #navMenu li:has(.sub-menu) > .menu-group-title { flex: 1 !important; min-width: 0 !important; padding: 0 !important; line-height: inherit !important; }
+        .nav-menu li:has(.sub-menu) > .sub-menu, nav li:has(.sub-menu) > .sub-menu, .navbar li:has(.sub-menu) > .sub-menu, #navMenu li:has(.sub-menu) > .sub-menu { flex-basis: 100% !important; width: 100% !important; }
+        .nav-menu li:has(.sub-menu) > a [class*="chevron"], .nav-menu li:has(.sub-menu) > a [class*="arrow"], .nav-menu li:has(.sub-menu) > a .fa-chevron-down, .nav-menu li:has(.sub-menu) > a .fa-angle-down, nav li:has(.sub-menu) > a [class*="chevron"], nav li:has(.sub-menu) > a [class*="arrow"], #navMenu li:has(.sub-menu) > a [class*="chevron"], #navMenu li:has(.sub-menu) > a [class*="arrow"] { display: none !important; visibility: hidden !important; }
+        .mobile-submenu-toggle { display: flex !important; align-items: center !important; justify-content: center !important; width: 44px !important; height: 44px !important; background: transparent !important; border: none !important; cursor: pointer !important; color: var(--text-light) !important; position: absolute !important; top: 0 !important; right: 0 !important; left: auto !important; z-index: 2 !important; }
+        [dir="rtl"] .mobile-submenu-toggle, html[lang="he"] .mobile-submenu-toggle, html[lang="ar"] .mobile-submenu-toggle { left: 0 !important; right: auto !important; }
+        .mobile-submenu-toggle::after { content: '' !important; width: 0 !important; height: 0 !important; border-left: 6px solid transparent !important; border-right: 6px solid transparent !important; border-top: 7px solid currentColor !important; transition: transform 0.3s ease !important; }
+        .mobile-submenu-toggle.expanded::after { transform: rotate(180deg) !important; }
+        .sub-menu a { padding: 10px 0 !important; display: block !important; color: var(--text-light) !important; }
+        .navbar .sub-menu li a, nav.navbar .sub-menu li a, .zappy-products-dropdown .sub-menu a { color: var(--text-light) !important; }
+      }
+      @media (min-width: 769px) { .mobile-submenu-toggle { display: none !important; } }
+    </style>
+
+    <style id="mobile-lang-menu-deployed-css">
+    @media (max-width: 768px) {
+      .lang-switcher,
+      .nav-cta-container .lang-switcher,
+      .nav-container .lang-switcher,
+      .navbar .lang-switcher,
+      .navbar .nav-cta-container .lang-switcher,
+      .nav-icons-left .lang-switcher,
+      .nav-ecommerce-icons .lang-switcher { display: none !important; }
+      .mobile-lang-menu { width: 100%; border-top: 1px solid rgba(128,128,128,0.2); padding: 8px 0 0 0; margin-top: 8px; }
+      .mobile-lang-toggle { display: flex !important; align-items: center; justify-content: space-between; width: 100%; padding: 12px 16px; background: none; border: none; cursor: pointer; font-size: 15px; color: inherit; font-family: inherit; }
+      .mobile-lang-toggle::after { content: ''; display: inline-block; width: 8px; height: 8px; border-right: 2px solid currentColor; border-bottom: 2px solid currentColor; transform: rotate(45deg); transition: transform 0.3s ease; margin-left: 8px; }
+      .mobile-lang-toggle.expanded::after { transform: rotate(-135deg); }
+      .mobile-lang-options { max-height: 0; overflow: hidden; transition: max-height 0.3s ease; }
+      .mobile-lang-options.expanded { max-height: 300px; }
+      .mobile-lang-option { display: flex !important; align-items: center; gap: 10px; padding: 10px 24px; text-decoration: none; color: inherit; font-size: 14px; font-family: inherit; }
+      .mobile-lang-option:hover { background: rgba(128,128,128,0.1); }
+      .mobile-lang-option.active { font-weight: 600; opacity: 0.7; pointer-events: none; }
+      .mobile-lang-option img { width: 20px; height: 20px; border-radius: 50%; }
+    }
+    @media (min-width: 769px) {
+      .mobile-lang-menu { display: none !important; }
+    }
+    </style>
+
+    <style id="zappy-widget-visibility">
+      #mic-access-tool-general-button, .mic-access-tool-general-button,
+      #mic-init-access-tool .mic-access-tool-general-button, #mic-init-access-tool #mic-access-tool-general-button,
+      ._access-icon, #mic-access-tool-box, .mic-access-tool-box,
+      #mic-init-access-tool #mic-access-tool-box, div[id*="mic-access-tool-box"], ._access-menu {
+        display: none !important; visibility: hidden !important; opacity: 0 !important; pointer-events: none !important;
+      }
+    </style>
+</head>
+<body>
+
+  <nav class="navbar" dir="rtl">
+  <button class="mobile-toggle" id="mobileToggle" aria-label="Menu">
+    <svg class="hamburger-icon" width="24" height="24" viewBox="0 0 24 24" fill="none">
+      <path d="M3 12h18M3 6h18M3 18h18" stroke="currentColor" stroke-width="2" stroke-linecap="round"></path>
+    </svg>
+    <svg class="close-icon" width="24" height="24" viewBox="0 0 24 24" fill="none" style="display: none;">
+      <path d="M18 6L6 18M6 6l12 12" stroke="currentColor" stroke-width="2" stroke-linecap="round"></path>
+    </svg>
+  </button>
+  
+  <button class="phone-header-btn" aria-label="Call">
+    <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor">
+      <path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"></path>
+    </svg>
+  </button>
+  
+  <div class="nav-container">
+    <div class="nav-right-group"><div class="nav-brand">
+      <a href="/" class="logo-link"><img class="logo" src="/assets/logo.webp" alt="טיולי ג׳יפים קסם הטבע"></a>
+    </div><ul class="nav-menu" id="navMenu"><li><a href="/אודות">אודות</a></li><li class="nav-dropdown"><button class="dropdown-toggle">טיולי ג'יפים <svg class="dropdown-arrow" width="10" height="10" viewBox="0 0 10 10"><path d="M2 4l3 3 3-3" stroke="currentColor" stroke-width="1.5" fill="none" stroke-linecap="round"></path></svg></button><ul class="dropdown-menu"><li><a href="/טיולי-גיפים-נחל-כנף-ושמורת-הבטיחה">נחל כנף ושמורת הבטיחה</a></li><li><a href="/טיול-גיפים-מסלול-מעיינות-בגולן">מסלול מעיינות בגולן</a></li><li><a href="/טיולי-גיפים-ספארי-לילה">ספארי לילה</a></li><li><a href="/טיול-גיפים-בחורף">טיול בחורף</a></li><li><a href="/טיולי-גיפים-בגשם-ברמת-הגולן">טיול בגשם ברמת הגולן</a></li><li><a href="/טיול-באחו-נוב">באחו נוב</a></li><li><a href="/טיול-למפל-השחור-בנחל-אל-על">מפל השחור בנחל אל-על</a></li><li><a href="/טיול-למפל-האירוסים-והבריכה">מפל האירוסים והבריכה</a></li><li><a href="/טיול-גיפים-ברמת-הגולן-וסובב-כנרת">רמת הגולן וסובב כנרת</a></li><li><a href="/טיול-גיפים-בגולן-והכנרת-מתנה">גולן וכנרת - מתנה</a></li><li><a href="/טיול-גיפים-בנוב-וקינון-החסידות">נוב וקינון החסידות</a></li><li><a href="/טיול-גיפים-ברמת-הגולן-באביב">רמת הגולן באביב</a></li></ul></li><li class="nav-dropdown"><button class="dropdown-toggle">מסלולים מיוחדים <svg class="dropdown-arrow" width="10" height="10" viewBox="0 0 10 10"><path d="M2 4l3 3 3-3" stroke="currentColor" stroke-width="1.5" fill="none" stroke-linecap="round"></path></svg></button><ul class="dropdown-menu"><li><a href="/גלגל-הרפאים-רוגם-אל-הירי-המסתורין-שבר">גלגל הרפאים - המסתורין שברמת הגולן</a></li><li><a href="/מסלול-טיול-גיפים-בדרום-רמת-הגולן">דרום רמת הגולן</a></li><li><a href="/טיול-גיפים-בסמך-תחתון">סמך התחתון</a></li><li><a href="/טיול-גיפים-גשר-הסורי">גשר הסורי</a></li><li><a href="/טיול-בשביל-אלי-כהן-הקטע-הדרומי">שביל אלי כהן - הקטע הדרומי</a></li></ul></li><li><a href="/טיול-לקבוצות-ברמת-הגולן">טיול לקבוצות</a></li><li><a href="/גלריה">גלריה</a></li><li><a href="/מטיילים-ממליצים">מטיילים ממליצים</a></li><li><a href="/בלוג">בלוג</a></li></ul></div>
+    
+    
+    
+    <div class="nav-cta-container">
+      <a href="/צור-קשר" class="nav-cta-btn">צור קשר</a>
+    </div>
+  </div>
+</nav>
+<script>
+
+// Navbar Mobile Menu Toggle and Contrast Fix
+(function() {
+  // Use 'load' event instead of 'DOMContentLoaded' to ensure we run AFTER all other scripts
+  window.addEventListener('load', function() {
+    
+    // FIX MOBILE BUTTON CONTRAST
+    // Detect navbar background color and apply contrasting color to mobile buttons
+    const navbar = document.querySelector('.navbar, nav, header');
+    if (!navbar) {
+      console.log('[Navbar] Navbar element not found');
+      return;
+    }
+    
+    // DECLARE VARIABLES EARLY to avoid Temporal Dead Zone errors
+    // These are used in multiple places below
+    let mobileToggle = document.getElementById('mobileToggle') ||
+                       document.querySelector('.mobile-toggle') ||
+                       document.querySelector('.hamburger') ||
+                       document.querySelector('.hamburger-menu') ||
+                       document.querySelector('.menu-toggle') ||
+                       document.querySelector('.burger-menu') ||
+                       document.querySelector('[aria-label="Menu"]') ||
+                       document.querySelector('[aria-label="תפריט"]');
+    
+    const phoneBtn = document.querySelector('.phone-header-btn');
+    
+    const computedStyle = window.getComputedStyle(navbar);
+    let bgColor = computedStyle.backgroundColor;
+    
+    console.log('[Navbar] Initial navbar background:', bgColor);
+    
+    // Check if background is transparent or rgba with 0 alpha
+    const isTransparent = bgColor === 'transparent' || 
+                         bgColor === 'rgba(0, 0, 0, 0)' ||
+                         (bgColor.startsWith('rgba') && bgColor.includes(', 0)'));
+    
+    if (isTransparent) {
+      // Check for background-image or gradient
+      const bgImage = computedStyle.backgroundImage;
+      if (bgImage && bgImage !== 'none') {
+        console.log('[Navbar] Navbar has background image/gradient, using dark text');
+        bgColor = 'rgb(240, 240, 240)'; // Assume light background
+      } else {
+        // Transparent navbar - check body background
+        const bodyBg = window.getComputedStyle(document.body).backgroundColor;
+        console.log('[Navbar] Navbar transparent, using body background:', bodyBg);
+        bgColor = bodyBg;
+      }
+    }
+    
+    // Calculate luminance to determine if background is light or dark
+    const rgb = bgColor.match(/\d+/g);
+    if (rgb && rgb.length >= 3) {
+      const r = parseInt(rgb[0]);
+      const g = parseInt(rgb[1]);
+      const b = parseInt(rgb[2]);
+      const luminance = (0.299 * r + 0.587 * g + 0.114 * b) / 255;
+      
+      // Mobile button colors are set by Claude's AI-generated CSS (same as .nav-menu a)
+      // No dynamic color overrides needed - colors come from the generated navbar CSS
+      console.log('[Navbar] Mobile button colors preserved from Claude CSS (luminance:', luminance.toFixed(2) + ')');
+      
+      // FIX ICON SIZES - Ensure SVGs are properly sized and visible
+      // INJECT CRITICAL CSS TO OVERRIDE ANY CONFLICTING RULES
+      const criticalCSS = document.createElement('style');
+      criticalCSS.id = 'zappy-mobile-nav-fix';
+      const htmlLang = document.documentElement.lang || 'en';
+      const htmlDir = document.documentElement.dir || 'ltr';
+      // Check both dir attribute AND lang for RTL detection
+      // dir="rtl" is the most reliable indicator
+      const isRTL = htmlDir === 'rtl' || htmlLang === 'he' || htmlLang === 'ar';
+      
+      criticalCSS.textContent = `
+        /* Hide mobile buttons on desktop, show only on mobile */
+        @media (min-width: 769px) {
+          .mobile-toggle,
+          .phone-header-btn {
+            display: none !important;
+          }
+        }
+        
+        /* Show and position mobile buttons correctly on mobile */
+        @media (max-width: 768px) {
+          .mobile-toggle,
+          .phone-header-btn {
+            position: absolute !important;
+            top: 50% !important;
+            transform: translateY(-50%) !important;
+            z-index: 1001 !important;
+            display: flex !important;
+            align-items: center !important;
+            justify-content: center !important;
+            width: 36px !important;
+            height: 36px !important;
+            border-radius: 50% !important;
+            border: none !important;
+            cursor: pointer !important;
+            padding: 6px !important;
+            background: none !important;
+            color: var(--text-light) !important;
+          }
+          
+          /* LTR positioning (default): hamburger LEFT, phone RIGHT */
+          html:not([dir="rtl"]):not([lang="he"]):not([lang="ar"]) .mobile-toggle,
+          html[dir="ltr"] .mobile-toggle {
+            left: 12px !important;
+            right: auto !important;
+          }
+          html:not([dir="rtl"]):not([lang="he"]):not([lang="ar"]) .phone-header-btn,
+          html[dir="ltr"] .phone-header-btn {
+            right: 12px !important;
+            left: auto !important;
+          }
+          
+          /* RTL positioning: hamburger RIGHT, phone LEFT */
+          html[dir="rtl"] .mobile-toggle,
+          html[lang="he"] .mobile-toggle,
+          html[lang="ar"] .mobile-toggle {
+            right: 12px !important;
+            left: auto !important;
+          }
+          html[dir="rtl"] .phone-header-btn,
+          html[lang="he"] .phone-header-btn,
+          html[lang="ar"] .phone-header-btn {
+            left: 12px !important;
+            right: auto !important;
+          }
+          
+          /* CRITICAL: Ensure nav-container has min-height on mobile */
+          /* All children are positioned absolutely/fixed on mobile, so height:auto collapses to 0 */
+          .nav-container {
+            min-height: 70px !important;
+            position: relative !important;
+          }
+          
+          /* Ensure SVG icons are properly sized and inherit color */
+          .mobile-toggle svg,
+          .phone-header-btn svg {
+            width: 24px !important;
+            height: 24px !important;
+            /* Don't force display - let JavaScript control hamburger/close toggle */
+          }
+          
+          /* Reset nav-cta-container on mobile - remove desktop box-shadow/padding */
+          /* that creates a visible ghost box when CTA button is hidden */
+          .nav-cta-container {
+            box-shadow: none !important;
+            padding: 0 !important;
+          }
+          
+          /* Hide nav-cta-container entirely on mobile when there's no lang-switcher */
+          /* (only the CTA button is inside, and it's hidden on mobile) */
+          .nav-cta-container:not(:has(.lang-switcher)) {
+            display: none !important;
+          }
+          
+          /* CRITICAL: Prevent hero image fade gradient from bleeding over headline text */
+          /* The .image-fade-gradient has bottom: -30px (extends below parent) */
+          /* On mobile stacked layout, this overlaps the h1 text below the image */
+          .hero-image-column {
+            overflow: hidden !important;
+          }
+          .image-fade-gradient {
+            bottom: 0 !important;
+          }
+          
+          /* Hide desktop language switcher on mobile - hamburger menu handles it */
+          /* High specificity to override stored CSS */
+          .lang-switcher,
+          .nav-cta-container .lang-switcher,
+          .nav-container .lang-switcher,
+          .navbar .lang-switcher,
+          .navbar .nav-cta-container .lang-switcher {
+            display: none !important;
+          }
+        }
+      `;
+      
+      // Remove existing fix if present and inject new one
+      const existing = document.getElementById('zappy-mobile-nav-fix');
+      if (existing) existing.remove();
+      document.head.appendChild(criticalCSS);
+      
+      console.log('[Navbar] Critical CSS injected for mobile nav positioning');
+      
+      // ONLY apply inline positioning styles on mobile viewport
+      // On desktop, the CSS handles hiding these buttons with display: none
+      // Inline styles were breaking desktop layout by overriding CSS
+      const isMobileViewport = window.innerWidth <= 768;
+      
+      if (mobileToggle) {
+        // Icon sizing applies to all viewports for consistency
+        const hamburgerIcon = mobileToggle.querySelector('.hamburger-icon');
+        const closeIcon = mobileToggle.querySelector('.close-icon');
+        
+        if (hamburgerIcon) {
+          hamburgerIcon.style.setProperty('width', '24px', 'important');
+          hamburgerIcon.style.setProperty('height', '24px', 'important');
+          hamburgerIcon.style.setProperty('display', 'block', 'important'); // Show hamburger by default
+        }
+        if (closeIcon) {
+          closeIcon.style.setProperty('width', '24px', 'important');
+          closeIcon.style.setProperty('height', '24px', 'important');
+          closeIcon.style.setProperty('display', 'none', 'important'); // Hide close icon by default
+        }
+        
+        // ONLY set positioning inline styles on mobile
+        if (isMobileViewport) {
+          mobileToggle.style.setProperty('position', 'absolute', 'important');
+          mobileToggle.style.setProperty('top', '50%', 'important');
+          mobileToggle.style.setProperty('transform', 'translateY(-50%)', 'important');
+          mobileToggle.style.setProperty('z-index', '1001', 'important');
+          
+          // Clear any inline left/right so CSS can take over based on html[dir]
+          mobileToggle.style.removeProperty('left');
+          mobileToggle.style.removeProperty('right');
+          
+          console.log('[Navbar] Mobile toggle positioning applied (mobile viewport)');
+        } else {
+          // On desktop, clear any positioning styles to let CSS handle it
+          mobileToggle.style.removeProperty('position');
+          mobileToggle.style.removeProperty('top');
+          mobileToggle.style.removeProperty('transform');
+          mobileToggle.style.removeProperty('z-index');
+          mobileToggle.style.removeProperty('left');
+          mobileToggle.style.removeProperty('right');
+          console.log('[Navbar] Desktop viewport - cleared mobile toggle inline positioning');
+        }
+      }
+      
+      if (phoneBtn) {
+        // Icon sizing applies to all viewports
+        const phoneIcon = phoneBtn.querySelector('svg');
+        if (phoneIcon) {
+          phoneIcon.style.width = '24px';
+          phoneIcon.style.height = '24px';
+          phoneIcon.setAttribute('width', '24');
+          phoneIcon.setAttribute('height', '24');
+        }
+        
+        // ONLY set positioning inline styles on mobile
+        if (isMobileViewport) {
+          phoneBtn.style.setProperty('position', 'absolute', 'important');
+          phoneBtn.style.setProperty('top', '50%', 'important');
+          phoneBtn.style.setProperty('transform', 'translateY(-50%)', 'important');
+          phoneBtn.style.setProperty('z-index', '1001', 'important');
+          
+          // Clear any inline left/right so CSS can take over based on html[dir]
+          phoneBtn.style.removeProperty('left');
+          phoneBtn.style.removeProperty('right');
+          
+          console.log('[Navbar] Phone button positioning applied (mobile viewport)');
+        } else {
+          // On desktop, clear any positioning styles to let CSS handle it
+          phoneBtn.style.removeProperty('position');
+          phoneBtn.style.removeProperty('top');
+          phoneBtn.style.removeProperty('transform');
+          phoneBtn.style.removeProperty('z-index');
+          phoneBtn.style.removeProperty('left');
+          phoneBtn.style.removeProperty('right');
+          console.log('[Navbar] Desktop viewport - cleared phone button inline positioning');
+        }
+      }
+    } else {
+      console.log('[Navbar] Could not parse background color:', bgColor);
+    }
+    
+    // MOBILE MENU TOGGLE
+    // Re-query in case DOM changed (mobileToggle already declared at top of function)
+    mobileToggle = document.getElementById('mobileToggle') ||
+                   document.querySelector('.mobile-toggle') ||
+                   document.querySelector('.hamburger') ||
+                   document.querySelector('.hamburger-menu') ||
+                   document.querySelector('.menu-toggle') ||
+                   document.querySelector('.burger-menu') ||
+                   document.querySelector('[aria-label="Menu"]') ||
+                   document.querySelector('[aria-label="תפריט"]');
+    
+    // EXPANDED SEARCH: Find nav menu by ID or class
+    const navMenu = document.getElementById('navMenu') ||
+                  document.querySelector('.nav-menu') ||
+                  document.querySelector('.nav-links') ||
+                  document.querySelector('nav ul:not(.submenu)');
+    
+    if (!mobileToggle || !navMenu) {
+      console.log('[Navbar] Mobile toggle or menu not found:', { toggle: !!mobileToggle, menu: !!navMenu });
+      return;
+    }
+    
+    // Ensure navMenu has ID for CSS targeting
+    if (!navMenu.id) {
+      navMenu.id = 'navMenu';
+    }
+    
+    console.log('[Navbar] Initializing mobile menu...');
+    
+    // Remove any existing event listeners by cloning the button
+    const newToggle = mobileToggle.cloneNode(true);
+    mobileToggle.parentNode.replaceChild(newToggle, mobileToggle);
+    
+    // Toggle menu on button click - use newToggle now
+    newToggle.addEventListener('click', function(e) {
+      e.preventDefault();
+      e.stopPropagation();
+      
+      const hamburgerIcon = this.querySelector('.hamburger-icon');
+      const closeIcon = this.querySelector('.close-icon');
+      const isActive = navMenu.classList.contains('active');
+      
+      if (isActive) {
+        // Close menu
+        navMenu.classList.remove('active');
+        if (hamburgerIcon) hamburgerIcon.style.setProperty('display', 'block', 'important');
+        if (closeIcon) closeIcon.style.setProperty('display', 'none', 'important');
+        document.body.style.overflow = '';
+        console.log('[Navbar] Menu closed');
+      } else {
+        // Open menu
+        navMenu.classList.add('active');
+        if (hamburgerIcon) hamburgerIcon.style.setProperty('display', 'none', 'important');
+        if (closeIcon) closeIcon.style.setProperty('display', 'block', 'important');
+        document.body.style.overflow = 'hidden';
+        console.log('[Navbar] Menu opened');
+      }
+    });
+    
+    // Close menu when clicking nav links (but NOT dropdown toggles)
+    const navLinks = navMenu.querySelectorAll('a');
+    navLinks.forEach(function(link) {
+      link.addEventListener('click', function() {
+        // Don't close if it's a dropdown child (unless it's a real navigation link)
+        if (this.getAttribute('href') === '#') return;
+        
+        const hamburgerIcon = newToggle.querySelector('.hamburger-icon');
+        const closeIcon = newToggle.querySelector('.close-icon');
+        
+        navMenu.classList.remove('active');
+        if (hamburgerIcon) hamburgerIcon.style.setProperty('display', 'block', 'important');
+        if (closeIcon) closeIcon.style.setProperty('display', 'none', 'important');
+        document.body.style.overflow = '';
+        console.log('[Navbar] Menu closed (link clicked)');
+      });
+    });
+    
+    // DROPDOWN MENU TOGGLE (for mobile and touch devices)
+    var dropdownToggles = navMenu.querySelectorAll('.dropdown-toggle');
+    dropdownToggles.forEach(function(toggle) {
+      toggle.addEventListener('click', function(e) {
+        e.preventDefault();
+        e.stopPropagation();
+        var parent = this.closest('.nav-dropdown');
+        if (!parent) return;
+        
+        // Close other open dropdowns at the same level
+        var siblings = parent.parentNode.querySelectorAll('.nav-dropdown.open');
+        siblings.forEach(function(sib) {
+          if (sib !== parent) sib.classList.remove('open');
+        });
+        
+        parent.classList.toggle('open');
+        console.log('[Navbar] Dropdown toggled:', parent.classList.contains('open') ? 'open' : 'closed');
+      });
+    });
+    
+    // Close dropdowns when clicking outside
+    document.addEventListener('click', function(e) {
+      if (!e.target.closest('.nav-dropdown')) {
+        var openDropdowns = document.querySelectorAll('.nav-dropdown.open');
+        openDropdowns.forEach(function(dd) { dd.classList.remove('open'); });
+      }
+    });
+    
+    console.log('[Navbar] Dropdown handlers initialized for ' + dropdownToggles.length + ' dropdowns');
+    
+    // Phone button functionality (phoneBtn already declared at top of function)
+    if (phoneBtn) {
+      phoneBtn.addEventListener('click', function() {
+        // Get phone number from placeholder in page or use default
+        const phoneLinks = document.querySelectorAll('a[href^="tel:"]');
+        const phoneNumber = phoneLinks.length > 0 
+          ? phoneLinks[0].getAttribute('href').replace('tel:', '')
+          : '[business_phone]';
+        
+        window.location.href = 'tel:' + phoneNumber;
+        console.log('[Navbar] Phone button clicked');
+      });
+    }
+    
+    console.log('[Navbar] Mobile menu initialized successfully');
+    
+    // === WHATSAPP BUTTON VISIBILITY FIX ===
+    // Ensure WhatsApp floating button is hidden on desktop and visible on mobile
+    // IMPORTANT: Only target the floating button by its class, NOT generic wa.me links
+    const handleWhatsAppVisibility = function() {
+      const whatsappBtn = document.querySelector('.whatsapp-float');
+      if (whatsappBtn) {
+        const isDesktop = window.innerWidth >= 769;
+        if (isDesktop) {
+          whatsappBtn.style.setProperty('display', 'none', 'important');
+          whatsappBtn.style.setProperty('visibility', 'hidden', 'important');
+          whatsappBtn.style.setProperty('opacity', '0', 'important');
+          whatsappBtn.style.setProperty('pointer-events', 'none', 'important');
+          console.log('[WhatsApp] Button hidden on desktop');
+        } else {
+          whatsappBtn.style.removeProperty('display');
+          whatsappBtn.style.removeProperty('visibility');
+          whatsappBtn.style.removeProperty('opacity');
+          whatsappBtn.style.removeProperty('pointer-events');
+          console.log('[WhatsApp] Button visible on mobile');
+        }
+      }
+    };
+    
+    // Run on load
+    handleWhatsAppVisibility();
+    
+    // Run on resize with debouncing
+    let resizeTimer;
+    window.addEventListener('resize', function() {
+      clearTimeout(resizeTimer);
+      resizeTimer = setTimeout(handleWhatsAppVisibility, 100);
+    });
+  });
+})();
+
+</script>
+  
+  <main>
+    <section class="home-hero-section" data-layout-spec="Home-hero" data-hero-type="fullscreen-scrim">
+  <div class="home-hero-section__bg-wrapper">
+    <img data-hero-bg="true" data-placeholder="home-hero-bg" data-context="A stunning wide-angle landscape photo of a rugged jeep driving through the dramatic terrain of the Golan Heights in Israel. The scene captures golden hour lighting with the jeep navigating rocky trails surrounded by wild natural beauty - rolling hills, volcanic rock formations, and lush green valleys. The composition emphasizes the adventure and raw beauty of nature, with dramatic sky and the sense of exploration and freedom. Professional outdoor photography style, high resolution, cinematic quality." width="1920" height="1080" src="/assets/extracted-29.webp" alt="טיולי ג׳יפים ברמת הגולן - קסם הטבע" class="home-hero-section__bg-image" data-zappy-editable-image="true">
+    <div class="home-hero-section__scrim" aria-hidden="true"></div>
+  </div>
+  
+  <div class="home-hero-section__content-wrapper">
+    <div class="home-hero-section__content">
+      <h1 class="home-hero-section__headline">טיולי ג׳יפים<br>קסם הטבע</h1>
+      <h3 class="home-hero-section__subtitle">גלו את היופי הפראי של רמת הגולן<br>בהרפתקאות ג׳יפים בלתי נשכחות</h3>
+      <div class="home-hero-section__cta-group">
+        <a href="#contact" class="home-hero-section__cta-primary">צור קשר</a>
+        <a href="#tours" class="home-hero-section__cta-secondary">תפריט הטיולים</a>
+      </div>
+    </div>
+  </div>
+  
+  <div class="home-hero-section__scroll-indicator" aria-hidden="true">
+    <svg data-no-icon-edit="true" aria-hidden="true" width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+      <path d="M12 5V19M12 19L5 12M12 19L19 12" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></path>
+    </svg>
+  </div>
+</section>
+
+<section class="home-content-section" data-layout-spec="Home-content">
+  <div class="home-content-container">
+    <div class="home-content-text-wrapper">
+      <h2 class="home-content-title">טיולי ג'יפים ברמת הגולן – קסם הטבע</h2>
+      <h3 class="home-content-subtitle">טיול ג'יפים ברמת הגולן והכינרת</h3>
+      <p class="home-content-description">טיולי ג'יפים ברמת הגולן – קסם הטבע מזמין אתכם לזמן קסום עם המשפחה</p>
+      <p class="home-content-description">טיול ג'יפים ברמת הגולן והכינרת</p>
+    </div>
+    
+    <div class="home-content-images-grid">
+      <div class="home-content-image-card home-content-image-card-1">
+        <img data-placeholder="home-content-image-1" data-context="Jeep adventure tour in the Golan Heights, Israel - rugged 4x4 vehicle driving through scenic mountain terrain with volcanic rocks, green hills, and wildflowers. Natural landscape photography showcasing the beauty of the Golan region during golden hour" width="600" height="400" src="/assets/extracted-30.webp" alt="טיול ג'יפים ברמת הגולן" data-zappy-editable-image="true">
+      </div>
+      
+      <div class="home-content-image-card home-content-image-card-2">
+        <img data-placeholder="home-content-image-2" data-context="Family enjoying a jeep tour in the Golan Heights - happy tourists in an open-top 4x4 vehicle with panoramic views of the Sea of Galilee (Kinneret) and rolling hills. Natural light photography capturing the adventure and excitement of nature tourism" width="600" height="400" src="/assets/extracted-31.webp" alt="משפחה בטיול ג'יפים" data-zappy-editable-image="true">
+      </div>
+      
+      <div class="home-content-image-card home-content-image-card-3">
+        <img data-placeholder="home-content-image-3" data-context="Stunning landscape of the Golan Heights and Sea of Galilee (Kinneret) - wide angle view of green valleys, volcanic hills, ancient ruins, and the blue waters of the lake. Dramatic sky with clouds, showcasing the magical natural beauty of northern Israel" width="600" height="400" src="" alt="נוף רמת הגולן והכינרת">
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="home-showcase-section" data-layout-spec="Home-showcase">
+  <div class="home-showcase-container">
+    <header class="home-showcase-header">
+      <h2 class="home-showcase-title">מפנקים אתכם בטיולי ג'יפים כבר מעל 21 שנים</h2>
+      <p class="home-showcase-subtitle">חוויה שתוציא אתכם מהשגרה!</p>
+    </header>
+
+    <div class="home-showcase-grid">
+      <!-- Card 1 -->
+      <article class="home-showcase-card home-showcase-card-featured">
+        <div class="home-showcase-card-image-wrapper">
+          <img data-placeholder="home-showcase-card-1" data-context="טיול ג׳יפים ברמת הגולן - נוף פנורמי מרהיב של הגולן עם ג׳יפ שטח על שביל הררי, שמים כחולים, צמחייה ירוקה, תחושת הרפתקה ושלווה בטבע הפראי" width="800" height="500" src="" alt="טיול ג׳יפים ברמת הגולן - נופים עוצרי נשימה">
+        </div>
+        <div class="home-showcase-card-content">
+          <h3 class="home-showcase-card-title">מפנקים אתכם בטיולי ג'יפים כבר מעל 21 שנים</h3>
+          <p class="home-showcase-card-text">חוויה שתוציא אתכם מהשגרה!
+קבלו את הטיול שלא תשכחו –טיול ג'יפים ברמת הגולן – הטבע הפראי, הנופים שפותחים את הלב.
+בין שבילים הרריים, להגיע לקטע בנחל לשכשוך שרק ב 4×4 יכול לקחת אתכם. 
+בין תצפיות עוצרות נש...</p>
+        </div>
+      </article>
+
+      <!-- Card 2 -->
+      <article class="home-showcase-card">
+        <div class="home-showcase-card-image-wrapper">
+          <img data-placeholder="home-showcase-card-2" data-context="טיול ג׳יפים רטוב בנחל כנף - ג׳יפ שטח עובר דרך נחל זורם עם מים, שמורת הבטיחה, טבע ירוק, אנשים נהנים בנחל, אווירה של קיץ רענן והרפתקה במים" width="600" height="400" src="" alt="טיול ג׳יפים רטוב בנחל כנף ושמורת הבטיחה">
+        </div>
+        <div class="home-showcase-card-content">
+          <h3 class="home-showcase-card-title">טיולי ג'יפים נחל כנף ושמורת הבטיחה</h3>
+          <p class="home-showcase-card-text">טיול ג'יפים רטוב לקיץ, נחצה את הנחלים שזורמים לכנרת( שמורת הבטיחה, זאכי, מג'רסה) הג'יפ יסע במים, שם נעצור להפסקת שיכשוך בנחל( מומלץ בגד ים),בנחל נתפנק באבטיח קר ונסע לתצפית נוף מרהיבה לכינרת.</p>
+        </div>
+      </article>
+
+      <!-- Card 3 -->
+      <article class="home-showcase-card">
+        <div class="home-showcase-card-image-wrapper">
+          <img data-placeholder="home-showcase-card-3" data-context="מעיינות קסומים בגולן - מעיין טבעי מוקף צמחייה עבותה, מים זורמים צלולים, משפחה עם ילדים נהנית ליד המעיין, אווירה שלווה ורעננה בטבע" width="600" height="400" src="" alt="טיול ג׳יפים למעיינות הגולן - חוויה משפחתית">
+        </div>
+        <div class="home-showcase-card-content">
+          <h3 class="home-showcase-card-title">טיול ג'יפים בגולן, מסלול מעיינות</h3>
+          <p class="home-showcase-card-text">הגולן ידוע במעיינותיו הקסומים ,אך איך מגיעים עם המשפחה והילדים הקטנים לאותם מקומות קסומים? כאן אנחנו נכנסים לתמונה. מומלץ להביא בגד ים.</p>
+        </div>
+      </article>
+
+      <!-- Card 4 -->
+      <article class="home-showcase-card">
+        <div class="home-showcase-card-image-wrapper">
+          <img data-placeholder="home-showcase-card-4" data-context="ספארי לילה בגולן - ג׳יפ שטח בלילה עם פנסים, בעלי חיים בר בטבע (צבאים, שועלים), שמי לילה מלאי כוכבים, אווירה מסתורית והרפתקנית של צילום טבע" width="600" height="400" src="" alt="ספארי לילה בגולן - הרפתקת צילום טבע">
+        </div>
+        <div class="home-showcase-card-content">
+          <h3 class="home-showcase-card-title">טיולי גיפים ספארי לילה בגולן</h3>
+          <p class="home-showcase-card-text">חוויה מיוחדת להרפתקנים שביניכם.
+בלעדי אצלנו יציאה עם רוני הילמן צלם טבע, המתמחה במקומות שבעלי חיים נמצאים ובהסברים. הבטחה שאיתנו כל טיול רואים בעלי חיים, לא יכולים להבטיח מה  בדיוק נראה ממגוון בעלי הח...</p>
+        </div>
+      </article>
+
+      <!-- Card 5 -->
+      <article class="home-showcase-card">
+        <div class="home-showcase-card-image-wrapper">
+          <img data-placeholder="home-showcase-card-5" data-context="טיולי חורף בגולן - ג׳יפ שטח עובר דרך שלולית בוץ, נחלים זורמים בעוצמה, גשם, נוף ירוק עשיר, אקסטרים והתרגשות של טיול חורף בשטח" width="600" height="400" src="" alt="טיולי חורף אקסטרים בגולן">
+        </div>
+        <div class="home-showcase-card-content">
+          <h3 class="home-showcase-card-title">טיולי חורף ברמת הגולן</h3>
+          <p class="home-showcase-card-text">טיולי חורף ברמת הגולן בגי'פ זוהי חווית אקסטרים שאין דומה לה. זוהי התרגשות מדהימה לעבור ולצלוח שלולית בוץ ולראות את הנחלים זורמים לכנרת.</p>
+          <a href="#contact" class="home-showcase-card-link">קרא עוד »</a>
+        </div>
+      </article>
+
+      <!-- Card 6 -->
+      <article class="home-showcase-card">
+        <div class="home-showcase-card-image-wrapper">
+          <img data-placeholder="home-showcase-card-6" data-context="גלגל הרפאים בגולן - מעגל אבנים עתיק מסתורי, אתר ארכיאולוגי קדום, נוף פנורמי של דרום הגולן, אווירה מיסטית והיסטורית, שמים דרמטיים" width="600" height="400" src="" alt="גלגל הרפאים - אתר מסתורי בדרום הגולן">
+        </div>
+        <div class="home-showcase-card-content">
+          <h3 class="home-showcase-card-title">גלגל הרפאים - מסלול מסתורי</h3>
+          <p class="home-showcase-card-text">מסלול טיולי ג'יפים מסתורי בדרום הגולן, נקרא גם גלגל הרפאים. מקום קדום ומסתורי, מעגל אבנים קדום שנחשף על ידי יצחקי גל, לאחר מלחמת ששת הימים.</p>
+          <a href="#contact" class="home-showcase-card-link">קרא עוד »</a>
+        </div>
+      </article>
+
+      <!-- Card 7 -->
+      <article class="home-showcase-card">
+        <div class="home-showcase-card-image-wrapper">
+          <img data-placeholder="home-showcase-card-7" data-context="וואדי אל על בגולן - נוף דרמטי של ואדי עמוק, שבילי עפר מפותלים, צוקים וסלעים, אום אל הקנטיר, טבע פראי ומרהיב, ג׳יפ שטח על שביל הררי" width="600" height="400" src="" alt="וואדי אל על - מסלול יפה ומאתגר בגולן">
+        </div>
+        <div class="home-showcase-card-content">
+          <h3 class="home-showcase-card-title">וואדי אל על - מסלול מיוחד</h3>
+          <p class="home-showcase-card-text">זמנית מסלול לא ניתן לנסיעה, המסלול נהרס מגשמים, מיועד לתיקון דרכי גישה.                                     
+אחד המסלולים החשובים והיפים בגולן. המסלול עובר בוואדי אל על, יורדים לכיוון אום אל הקנטיר או...</p>
+          <a href="#contact" class="home-showcase-card-link">קרא עוד »</a>
+        </div>
+      </article>
+
+      <!-- Card 8 -->
+      <article class="home-showcase-card">
+        <div class="home-showcase-card-image-wrapper">
+          <img data-placeholder="home-showcase-card-8" data-context="משפחה נהנית בטיול ג׳יפים - ילדים ומבוגרים מחייכים בג׳יפ שטח, נוף יפה ברקע, אווירה של שמחה והנאה, חוויה משפחתית בלתי נשכחת בטבע הגולן" width="600" height="400" src="" alt="חוויה משפחתית בלתי נשכחת - טיולי ג׳יפים לכל המשפחה">
+        </div>
+        <div class="home-showcase-card-content">
+          <h3 class="home-showcase-card-title">להנות,להתרגש ולהגיע לעומק השטח</h3>
+          <p class="home-showcase-card-text">להישאר עם חוויה שהילדים/ העובדים שלכם לא יצליחו לעולם לשכוח!מתלבטים איזה אטרקציה לבחור לכל המשפחה ושיתאים לכל גיל ושכולם יהנו?אז טיולי ג'יפים ברמת הגולן זה אכן התשובה. אחרי שתטילו עם טיולי ג'יפים קסם ...</p>
+        </div>
+      </article>
+    </div>
+  </div>
+</section>
+
+<section class="home-showcase-alt-2-section" data-layout-spec="Home-showcase-alt-2">
+  <div class="home-showcase-alt-2-container">
+    <div class="home-showcase-alt-2-header">
+      <h2 class="home-showcase-alt-2-title">טיולי ג'יפים נחל כנף ושמורת הבטיחה</h2>
+      <p class="home-showcase-alt-2-subtitle">טיול ג'יפים בגולן, מסלול מעיינות</p>
+    </div>
+    
+    <div class="home-showcase-alt-2-grid">
+      <article class="home-showcase-alt-2-card">
+        <div class="home-showcase-alt-2-card-image-wrapper">
+          <img data-placeholder="card-1-image" data-context="Jeep driving through flowing stream in Golan Heights nature reserve, water splashing around vehicle, lush green landscape, Beteiha Reserve scenery, summer adventure tourism" width="600" height="400" src="" alt="טיול ג׳יפים נחל כנף ושמורת הבטיחה">
+        </div>
+        <div class="home-showcase-alt-2-card-content">
+          <h3 class="home-showcase-alt-2-card-title">טיולי ג'יפים נחל כנף ושמורת הבטיחה</h3>
+          <p class="home-showcase-alt-2-card-text">טיול ג'יפים רטוב לקיץ, נחצה את הנחלים שזורמים לכנרת( שמורת הבטיחה, זאכי, מג'רסה) הג'יפ יסע במים, שם נעצור להפסקת שיכשוך בנחל( מומלץ בגד ים),בנחל נתפנק באבטיח קר ונסע לתצפית נוף מרהיבה לכינרת.</p>
+          <div class="home-showcase-alt-2-card-icon">
+            <svg data-element-type="icon" data-icon-type="svg" width="32" height="32" viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <path d="M16 4C16 4 8 8 8 16C8 20 10 24 16 28C22 24 24 20 24 16C24 8 16 4 16 4Z" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></path>
+              <path d="M12 16C12 16 14 18 16 20C18 18 20 16 20 16" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></path>
+            </svg>
+          </div>
+        </div>
+      </article>
+
+      <article class="home-showcase-alt-2-card">
+        <div class="home-showcase-alt-2-card-image-wrapper">
+          <img data-placeholder="card-2-image" data-context="Family-friendly natural spring in Golan Heights, crystal clear water pool surrounded by rocks and vegetation, children playing safely in shallow water, magical nature setting" width="600" height="400" src="" alt="טיול ג׳יפים בגולן, מסלול מעיינות">
+        </div>
+        <div class="home-showcase-alt-2-card-content">
+          <h3 class="home-showcase-alt-2-card-title">טיול ג'יפים בגולן, מסלול מעיינות</h3>
+          <p class="home-showcase-alt-2-card-text">הגולן ידוע במעיינותיו הקסומים ,אך איך מגיעים עם המשפחה והילדים הקטנים לאותם מקומות קסומים? כאן אנחנו נכנסים לתמונה. מומלץ להביא בגד ים.</p>
+          <div class="home-showcase-alt-2-card-icon">
+            <svg data-element-type="icon" data-icon-type="svg" width="32" height="32" viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <circle cx="16" cy="12" r="6" stroke="currentColor" stroke-width="2"></circle>
+              <path d="M8 24C8 24 10 20 16 20C22 20 24 24 24 24" stroke="currentColor" stroke-width="2" stroke-linecap="round"></path>
+              <path d="M12 12C12 12 14 10 16 10C18 10 20 12 20 12" stroke="currentColor" stroke-width="2" stroke-linecap="round"></path>
+            </svg>
+          </div>
+        </div>
+      </article>
+
+      <article class="home-showcase-alt-2-card">
+        <div class="home-showcase-alt-2-card-image-wrapper">
+          <img data-placeholder="card-3-image" data-context="Night safari jeep tour in Golan Heights, wildlife photography scene with photographer using camera, nocturnal animals visible in spotlight, starry sky, adventure tourism at night" width="600" height="400" src="" alt="טיולי גיפים ספארי לילה בגולן">
+        </div>
+        <div class="home-showcase-alt-2-card-content">
+          <h3 class="home-showcase-alt-2-card-title">טיולי גיפים ספארי לילה בגולן</h3>
+          <p class="home-showcase-alt-2-card-text">חוויה מיוחדת להרפתקנים שביניכם.
+בלעדי אצלנו יציאה עם רוני הילמן צלם טבע, המתמחה במקומות שבעלי חיים נמצאים ובהסברים. הבטחה שאיתנו כל טיול רואים בעלי חיים, לא יכולים להבטיח מה  בדיוק נראה ממגוון בעלי הח...</p>
+          <div class="home-showcase-alt-2-card-icon">
+            <svg data-element-type="icon" data-icon-type="svg" width="32" height="32" viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <path d="M16 8C12 8 8 10 8 14C8 18 12 20 16 20C20 20 24 18 24 14C24 10 20 8 16 8Z" stroke="currentColor" stroke-width="2"></path>
+              <circle cx="16" cy="14" r="2" fill="currentColor"></circle>
+              <path d="M6 24L10 18" stroke="currentColor" stroke-width="2" stroke-linecap="round"></path>
+              <path d="M26 24L22 18" stroke="currentColor" stroke-width="2" stroke-linecap="round"></path>
+            </svg>
+          </div>
+        </div>
+      </article>
+    </div>
+  </div>
+  
+  <div class="home-showcase-alt-2-divider-wrapper">
+    <svg data-no-icon-edit="true" aria-hidden="true" viewBox="0 0 1200 80" preserveAspectRatio="none" xmlns="http://www.w3.org/2000/svg">
+      <path d="M0,80 L0,45 Q100,38 200,45 T400,42 Q500,48 600,42 T800,45 Q900,40 1000,45 T1200,42 L1200,80 Z" fill="var(--bg-light)"></path>
+    </svg>
+  </div>
+</section>
+
+<section class="home-cta-section" data-layout-spec="Home-cta">
+  <div class="home-cta-container">
+    <div class="home-cta-header">
+      <h2 class="home-cta-title">טיול ג'יפים ברמת הגולן</h2>
+      <p class="home-cta-subtitle">השאירו הודעה ונחזור אליכם</p>
+    </div>
+    
+    <div class="home-cta-grid">
+      <!-- Card 1 -->
+      <div class="home-cta-card">
+        <div class="home-cta-card-icon">
+          <svg data-element-type="icon" data-icon-type="svg" width="64" height="64" viewBox="0 0 64 64" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <path d="M8 32L16 24H48L56 32V48C56 50.2091 54.2091 52 52 52H12C9.79086 52 8 50.2091 8 48V32Z" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"></path>
+            <path d="M16 24V16C16 13.7909 17.7909 12 20 12H44C46.2091 12 48 13.7909 48 16V24" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"></path>
+            <circle cx="20" cy="40" r="4" stroke="currentColor" stroke-width="2.5"></circle>
+            <circle cx="44" cy="40" r="4" stroke="currentColor" stroke-width="2.5"></circle>
+            <path d="M28 24H36" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"></path>
+            <path d="M8 32H56" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"></path>
+          </svg>
+        </div>
+        <h3 class="home-cta-card-title">טיול ג'יפים ברמת הגולן</h3>
+        <p class="home-cta-card-text">ג'יפים של 7/ 8 או 9 מקומות</p>
+        <img data-placeholder="card-1-jeep-fleet" data-context="Modern 4x4 jeep vehicles parked in a row in the Golan Heights, showing 7-9 seater capacity vehicles ready for adventure tours, natural landscape background, professional fleet photography" width="400" height="280" src="" alt="צי רכבי הג'יפים שלנו" class="home-cta-card-image">
+      </div>
+      
+      <!-- Card 2 - Contact Form -->
+      <div class="home-cta-card home-cta-card-form">
+        <div class="home-cta-card-icon">
+          <svg data-element-type="icon" data-icon-type="svg" width="64" height="64" viewBox="0 0 64 64" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <path d="M12 16C12 13.7909 13.7909 12 16 12H48C50.2091 12 52 13.7909 52 16V48C52 50.2091 50.2091 52 48 52H16C13.7909 52 12 50.2091 12 48V16Z" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"></path>
+            <path d="M12 24H52" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"></path>
+            <path d="M20 32H44" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"></path>
+            <path d="M20 40H36" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"></path>
+          </svg>
+        </div>
+        <h3 class="home-cta-card-title">השאירו הודעה ונחזור אליכם</h3>
+        
+        <form class="contact-form home-cta-form">
+          <div class="home-cta-form-group">
+            <label for="cta-name">שם מלא</label>
+            <input type="text" id="cta-name" name="name" required="">
+          </div>
+          
+          <div class="home-cta-form-group">
+            <label for="cta-phone">טלפון</label>
+            <input type="tel" id="cta-phone" name="phone" required="">
+          </div>
+          
+          <div class="home-cta-form-group">
+            <label for="cta-email">אימייל</label>
+            <input type="email" id="cta-email" name="email" required="">
+          </div>
+          
+          <div class="home-cta-form-group">
+            <label for="cta-message">הודעה</label>
+            <textarea id="cta-message" name="message" rows="4" required=""></textarea>
+          </div>
+          
+          <button type="submit" class="home-cta-submit-btn">שליחה</button>
+        </form>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="home-content-alt-2-section" data-layout-spec="Home-content-alt-2">
+  <div class="home-content-alt-2-container">
+    <div class="home-content-alt-2-content">
+      <h2 class="home-content-alt-2-heading">טיולי ג'יפים בגולן הדרך להנאות,להתרגש ,להגיע לעומק השטח</h2>
+      <div class="home-content-alt-2-text">
+        <p>להישאר עם חוויה שהילדים/ העובדים שלכם לא יצליחו לעולם לשכוח!מתלבטים איזה אטרקציה לבחור לכל המשפחה ושיתאים לכל גיל ושכולם יהנו?אז טיולי ג'יפים זה אכן התשובה. אחרי שתטילו עם רוני הילמן בטוח שתחזרו אלינו בכל פעם שתבואו לגולן כי יש כול כך הרבה מקומות קסומים ועוצרי נשימה מרהיבים ביופיים בגולן שאי אפשר להכיר בדרך אחרת.</p>
+      </div>
+    </div>
+    <div class="home-content-alt-2-image-wrapper">
+      <img data-placeholder="home-content-alt-2-image-1" data-context="A stunning landscape photo of a rugged jeep driving through the dramatic Golan Heights terrain at golden hour, with rolling hills, volcanic rock formations, and wildflowers in the foreground, capturing the adventure and natural beauty of off-road jeep tours in Israel's northern region" width="600" height="400" src="" alt="טיול ג'יפים בגולן - נוף עוצר נשימה">
+    </div>
+  </div>
+  <svg class="home-content-alt-2-decorative-shape" data-no-icon-edit="true" aria-hidden="true" viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg">
+    <circle cx="100" cy="100" r="80" fill="none" stroke="currentColor" stroke-width="1" opacity="0.15"></circle>
+    <circle cx="100" cy="100" r="60" fill="none" stroke="currentColor" stroke-width="1" opacity="0.15"></circle>
+    <circle cx="100" cy="100" r="40" fill="none" stroke="currentColor" stroke-width="1" opacity="0.15"></circle>
+  </svg>
+</section>
+
+<section class="home-cta-alt-2-section" data-layout-spec="Home-cta-alt-2">
+  <div class="home-cta-alt-2-container">
+    <div class="home-cta-alt-2-content">
+      <h2 class="home-cta-alt-2-headline">השאירו פרטים ואנחנו נחזור אליכם</h2>
+      <p class="home-cta-alt-2-description">אתם מוזמנים לחוויה יוצאת דופן, להשתחרר, להתחבר אל השקט והטבע, להתנתק מהניידים ולהיות עם המשפחה !לחוות את הטבע ברמת הגולן וסובב כנרת כמו שאף פעם לא חשבתם שאפשר לחוות.חוייה כיפית שניתן לחוש רק בטיולי ג'יפים בגולן</p>
+      
+      <form class="contact-form home-cta-alt-2-form">
+        <div class="home-cta-alt-2-form-group">
+          <input type="text" name="name" placeholder="שם מלא" required="" aria-label="שם מלא">
+        </div>
+        <div class="home-cta-alt-2-form-group">
+          <input type="tel" name="phone" placeholder="טלפון" required="" aria-label="טלפון">
+        </div>
+        <div class="home-cta-alt-2-form-group">
+          <input type="email" name="email" placeholder="אימייל" required="" aria-label="אימייל">
+        </div>
+        <div class="home-cta-alt-2-form-group home-cta-alt-2-form-group-full">
+          <textarea name="message" rows="4" placeholder="הודעה (אופציונלי)" aria-label="הודעה"></textarea>
+        </div>
+        <button type="submit" class="home-cta-alt-2-submit-btn">
+          <span>שליחה</span>
+          <svg data-element-type="icon" data-icon-type="svg" width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <path d="M3 12L21 12M21 12L14 5M21 12L14 19" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" transform="scale(-1, 1) translate(-24, 0)"></path>
+          </svg>
+        </button>
+      </form>
+    </div>
+    
+    <div class="home-cta-alt-2-image-wrapper">
+      <img data-placeholder="jeep-tour-golan-nature" data-context="A rugged jeep driving through the beautiful Golan Heights landscape at golden hour, with rolling green hills, wildflowers, and dramatic sky in the background. Natural, adventurous atmosphere showcasing the magic of nature tourism in Israel." width="600" height="700" src="" alt="טיול ג׳יפים ברמת הגולן - קסם הטבע">
+      <div class="home-cta-alt-2-decorative-shape"></div>
+    </div>
+  </div>
+  
+  <svg class="home-cta-alt-2-decorative-wave" data-no-icon-edit="true" aria-hidden="true" viewBox="0 0 1200 120" preserveAspectRatio="none" xmlns="http://www.w3.org/2000/svg">
+    <path d="M0,60 Q150,80 300,60 T600,60 Q750,40 900,60 T1200,60 L1200,0 L0,0 Z" fill="var(--bg-light)" opacity="0.3"></path>
+  </svg>
+</section>
+  </main>
+  
+  <footer class="site-footer">
+  <div class="footer-container">
+    <div class="footer-top">
+      <div class="footer-column footer-about">
+        <img src="/assets/logo.webp" alt="טיולי ג׳יפים קסם הטבע" class="logo">
+        <p class="footer-description">חוויות ג'יפים בלתי נשכחות ברמת הגולן - גלו את קסם הטבע והנופים המרהיבים</p>
+      </div>
+      
+      <div class="footer-column footer-links">
+        <h3>קישורים מהירים</h3>
+        <ul>
+          <li><a href="/אודות">אודות</a></li>
+          <li><a href="/טיולי-גיפים-נחל-כנף-ושמורת-הבטיחה">טיולי ג'יפים בנחל כנף</a></li>
+          <li><a href="/טיול-גיפים-מסלול-מעיינות-בגולן">מסלול מעיינות בגולן</a></li>
+          <li><a href="/טיולי-גיפים-ספארי-לילה">ספארי לילה</a></li>
+          <li><a href="/גלריה">גלריה</a></li>
+          <li><a href="/מטיילים-ממליצים">מטיילים ממליצים</a></li>
+          <li><a href="/בלוג">בלוג</a></li>
+          <li><a href="/צור-קשר">צור קשר</a></li>
+        </ul>
+      </div>
+      
+      <div class="footer-column footer-tours">
+        <h3>טיולים נוספים</h3>
+        <ul>
+          <li><a href="/גלגל-הרפאים-רוגם-אל-הירי-המסתורין-שבר">גלגל הרפאים</a></li>
+          <li><a href="/מסלול-טיול-גיפים-בדרום-רמת-הגולן">דרום רמת הגולן</a></li>
+          <li><a href="/טיול-גיפים-בסמך-תחתון">סמך התחתון</a></li>
+          <li><a href="/טיול-גיפים-גשר-הסורי">גשר הסורי</a></li>
+          <li><a href="/טיול-באחו-נוב">אחו נוב</a></li>
+          <li><a href="/טיול-למפל-השחור-בנחל-אל-על">מפל השחור</a></li>
+          <li><a href="/טיול-למפל-האירוסים-והבריכה">מפל האירוסים</a></li>
+        </ul>
+      </div>
+      
+      <div class="footer-column footer-contact">
+        <h3>צור קשר</h3>
+        <ul class="contact-info">
+          <li>
+            <i class="fas fa-envelope"></i>
+            <a href="mailto:[business_email]">[business_email]</a>
+          </li>
+          <li>
+            <i class="fas fa-phone"></i>
+            <a href="tel:[business_phone]">[business_phone]</a>
+          </li>
+          <li>
+            <i class="fas fa-map-marker-alt"></i>
+            <span>[business_address]</span>
+          </li>
+        </ul>
+        <div class="social-links">
+          <a href="[facebook_handle]" aria-label="Facebook"><i class="fab fa-facebook-f"></i></a>
+          <a href="[instagram_handle]" aria-label="Instagram"><i class="fab fa-instagram"></i></a>
+          <a href="[whatsapp_handle]" aria-label="WhatsApp"><i class="fab fa-whatsapp"></i></a>
+        </div>
+      </div>
+    </div>
+    
+    <div class="footer-bottom">
+      <div class="footer-bottom-content">
+        <p class="copyright">© 2026 טיולי ג׳יפים קסם הטבע. All rights reserved.</p>
+        <div class="footer-legal">
+          <a href="/privacy">Privacy Policy</a>
+          <span class="separator">|</span>
+          <a href="/terms">Terms &amp; Conditions</a>
+          <span class="separator">|</span>
+          <a href="/accessibility">Accessibility</a>
+          <span class="separator">|</span>
+          <a href="https://zappy5.com" target="_blank" class="zappy-attribution">Generated by Zappy</a>
+        </div>
+      </div>
+    </div>
+  </div>
+</footer>
+  
+  <a href="https://wa.me/[whatsapp_handle]" class="whatsapp-float" aria-label="WhatsApp">
+    <i class="fab fa-whatsapp"></i>
+  </a>
+  
+  <div data-integration="accessibility:toolbar"></div>
+
+    <script src="/script.js"></script>
+
+    <script id="zappy-mobile-submenu-script">
+    (function() {
+      function initMobileSubmenuToggles() {
+        if (window.innerWidth > 768) {
+          document.querySelectorAll('.mobile-submenu-toggle').forEach(function(btn) { btn.remove(); });
+          document.querySelectorAll('.sub-menu.mobile-expanded').forEach(function(menu) { menu.classList.remove('mobile-expanded'); });
+          return;
+        }
+        var items = document.querySelectorAll('.nav-menu li:has(.sub-menu), nav li:has(.sub-menu), .navbar li:has(.sub-menu), #navMenu li:has(.sub-menu)');
+        items.forEach(function(li) {
+          if (li.querySelector('.mobile-submenu-toggle')) return;
+          var submenu = li.querySelector('.sub-menu');
+          var parentLink = li.querySelector(':scope > a');
+          if (!submenu || !parentLink) return;
+          var toggleBtn = document.createElement('button');
+          toggleBtn.className = 'mobile-submenu-toggle';
+          toggleBtn.setAttribute('aria-label', 'Toggle submenu');
+          toggleBtn.setAttribute('type', 'button');
+          parentLink.insertAdjacentElement('afterend', toggleBtn);
+          toggleBtn.addEventListener('click', function(e) {
+            e.preventDefault(); e.stopPropagation();
+            document.querySelectorAll('.sub-menu.mobile-expanded').forEach(function(menu) {
+              if (menu !== submenu) { menu.classList.remove('mobile-expanded'); var t = menu.parentElement.querySelector('.mobile-submenu-toggle'); if(t) t.classList.remove('expanded'); }
+            });
+            submenu.classList.toggle('mobile-expanded');
+            toggleBtn.classList.toggle('expanded');
+          });
+        });
+      }
+      if (document.readyState === 'loading') { document.addEventListener('DOMContentLoaded', initMobileSubmenuToggles); }
+      else { initMobileSubmenuToggles(); }
+      var resizeTimer; window.addEventListener('resize', function() { clearTimeout(resizeTimer); resizeTimer = setTimeout(initMobileSubmenuToggles, 250); });
+      // Re-initialize when mobile menu becomes visible (MutationObserver)
+      var observer = new MutationObserver(function(mutations) {
+        mutations.forEach(function(mutation) {
+          if (mutation.type === 'attributes') {
+            var target = mutation.target;
+            if (target.classList && (target.classList.contains('active') || target.classList.contains('open'))) {
+              setTimeout(initMobileSubmenuToggles, 100);
+            }
+          }
+        });
+      });
+      setTimeout(function() {
+        document.querySelectorAll('.mobile-menu, .nav-menu, #navMenu, nav').forEach(function(menu) {
+          observer.observe(menu, { attributes: true, attributeFilter: ['class', 'style'] });
+        });
+      }, 500);
+    })();
+    </script>
+
+    <script id="zappy-mobile-lang-menu-script">
+    (function() {
+      function initMobileLangMenu() {
+        if (window.innerWidth > 768) {
+          var existingMenu = document.querySelector('.mobile-lang-menu');
+          if (existingMenu) existingMenu.remove();
+          return;
+        }
+        if (document.querySelector('.mobile-lang-menu')) return;
+        var switcher = document.querySelector('.lang-switcher');
+        if (!switcher) return;
+        var dropdown = switcher.querySelector('.lang-switcher-dropdown');
+        if (!dropdown) return;
+        var options = dropdown.querySelectorAll('.lang-option');
+        if (options.length === 0) return;
+        var navMenu = document.getElementById('navMenu') || document.querySelector('.nav-menu') || document.querySelector('nav ul');
+        if (!navMenu) return;
+        var currentLang = document.documentElement.lang || 'en';
+        var langConfigs = {
+          he: {name:'עברית',flag:'https://api.iconify.design/circle-flags/il.svg'},
+          en: {name:'English',flag:'https://api.iconify.design/circle-flags/us.svg'},
+          ar: {name:'العربية',flag:'https://api.iconify.design/circle-flags/sa.svg'},
+          fr: {name:'Français',flag:'https://api.iconify.design/circle-flags/fr.svg'},
+          es: {name:'Español',flag:'https://api.iconify.design/circle-flags/es.svg'},
+          de: {name:'Deutsch',flag:'https://api.iconify.design/circle-flags/de.svg'},
+          ru: {name:'Русский',flag:'https://api.iconify.design/circle-flags/ru.svg'},
+          zh: {name:'中文',flag:'https://api.iconify.design/circle-flags/cn.svg'},
+          ja: {name:'日本語',flag:'https://api.iconify.design/circle-flags/jp.svg'},
+          pt: {name:'Português',flag:'https://api.iconify.design/circle-flags/br.svg'},
+          it: {name:'Italiano',flag:'https://api.iconify.design/circle-flags/it.svg'},
+          ko: {name:'한국어',flag:'https://api.iconify.design/circle-flags/kr.svg'}
+        };
+        var container = document.createElement('div');
+        container.className = 'mobile-lang-menu';
+        var currentConfig = langConfigs[currentLang] || {name:currentLang,flag:''};
+        var toggleBtn = document.createElement('button');
+        toggleBtn.className = 'mobile-lang-toggle';
+        toggleBtn.type = 'button';
+        var currentFlagHtml = currentConfig.flag ? '<img src="' + currentConfig.flag + '" width="20" height="20" alt="" style="border-radius:50%;margin-right:8px;margin-left:8px;">' : '';
+        toggleBtn.innerHTML = currentFlagHtml + currentConfig.name;
+        container.appendChild(toggleBtn);
+        var optionsDiv = document.createElement('div');
+        optionsDiv.className = 'mobile-lang-options';
+        var currentLink = document.createElement('a');
+        currentLink.className = 'mobile-lang-option active';
+        currentLink.href = '#';
+        currentLink.innerHTML = currentFlagHtml + currentConfig.name;
+        optionsDiv.appendChild(currentLink);
+        options.forEach(function(opt) {
+          var link = document.createElement('a');
+          link.className = 'mobile-lang-option';
+          link.href = opt.getAttribute('href');
+          link.innerHTML = opt.innerHTML;
+          optionsDiv.appendChild(link);
+        });
+        container.appendChild(optionsDiv);
+        navMenu.appendChild(container);
+        toggleBtn.addEventListener('click', function(e) {
+          e.preventDefault();
+          e.stopPropagation();
+          toggleBtn.classList.toggle('expanded');
+          optionsDiv.classList.toggle('expanded');
+        });
+      }
+      if (document.readyState === 'loading') { document.addEventListener('DOMContentLoaded', initMobileLangMenu); }
+      else { initMobileLangMenu(); }
+      window.addEventListener('resize', function() { clearTimeout(window._mlrt); window._mlrt = setTimeout(initMobileLangMenu, 250); });
+    })();
+    </script>
+</body>
+</html>
